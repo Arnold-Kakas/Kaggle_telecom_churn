@@ -1,37 +1,144 @@
-Acronyms;Description
-circle_id;Telecom circle area to which the customer belongs to
-loc;Local calls  within same telecom circle
-std;STD calls  outside the calling circle
-ic;Incoming calls
-og;Outgoing calls
-t2t;Operator T to T ie within same operator mobile to mobile
-t2m;Operator T to other operator mobile
-t2o;Operator T to other operator fixed line
-t2f;Operator T to fixed lines of T
-t2c;Operator T to its own call center
-arpu;Average revenue per user
-mou;Minutes of usage  voice calls
-aon;Age on network  number of days the customer is using the operator T network
-onnet;All kind of calls within the same operator network
-offnet;All kind of calls outside the operator T network
-roam;Indicates that customer is in roaming zone during the call
-spl;Special calls
-isd;ISD calls
-rech;Recharge
-num;Number
-amt;Amount in local currency
-max;Maximum
-data;Mobile internet
-3g;G network
-av;Average
-vol;Mobile internet usage volume in MB
-2g;G network
-pck;Prepaid service schemes called  PACKS
-night;Scheme to use during specific night hours only
-monthly;Service schemes with validity equivalent to a month
-sachet;Service schemes with validity smaller than a month
-6;KPI for the month of June
-7;KPI for the month of July
-8;KPI for the month of August
-fb_user;Service scheme to avail services of Facebook and similar social networking sites
-vbc;Volume based cost  when no specific scheme is not purchased and paid as per usage
+Age on network  number of days the customer is using the operator T network   
+Average revenue per user   
+All kind of calls within the same operator network Minutes of usage  voice calls  
+All kind of calls outside the operator T network Minutes of usage  voice calls  
+Indicates that customer is in roaming zone during the call Incoming calls Minutes of usage  voice calls 
+Indicates that customer is in roaming zone during the call Outgoing calls Minutes of usage  voice calls 
+Local calls  within same telecom circle Outgoing calls Operator T to T ie within same operator mobile to mobile Minutes of usage  voice calls
+Local calls  within same telecom circle Outgoing calls Operator T to other operator mobile Minutes of usage  voice calls
+Local calls  within same telecom circle Outgoing calls Operator T to fixed lines of T Minutes of usage  voice calls
+Local calls  within same telecom circle Outgoing calls Operator T to its own call center Minutes of usage  voice calls
+Local calls  within same telecom circle Outgoing calls Minutes of usage  voice calls 
+STD calls  outside the calling circle Outgoing calls Operator T to T ie within same operator mobile to mobile Minutes of usage  voice calls
+STD calls  outside the calling circle Outgoing calls Operator T to other operator mobile Minutes of usage  voice calls
+STD calls  outside the calling circle Outgoing calls Operator T to fixed lines of T Minutes of usage  voice calls
+STD calls  outside the calling circle Outgoing calls Minutes of usage  voice calls 
+ISD calls Outgoing calls Minutes of usage  voice calls 
+Special calls Outgoing calls Minutes of usage  voice calls 
+Outgoing calls   
+Local calls  within same telecom circle Incoming calls Operator T to T ie within same operator mobile to mobile Minutes of usage  voice calls
+Local calls  within same telecom circle Incoming calls Operator T to other operator mobile Minutes of usage  voice calls
+Local calls  within same telecom circle Incoming calls Operator T to fixed lines of T Minutes of usage  voice calls
+Local calls  within same telecom circle Incoming calls Minutes of usage  voice calls 
+STD calls  outside the calling circle Incoming calls Operator T to T ie within same operator mobile to mobile Minutes of usage  voice calls
+STD calls  outside the calling circle Incoming calls Operator T to other operator mobile Minutes of usage  voice calls
+STD calls  outside the calling circle Incoming calls Operator T to fixed lines of T Minutes of usage  voice calls
+STD calls  outside the calling circle Incoming calls Minutes of usage  voice calls 
+Special calls Incoming calls Minutes of usage  voice calls 
+ISD calls Incoming calls Minutes of usage  voice calls 
+Incoming calls   
+Maximum Recharge Amount in local currency 
+Maximum Recharge Mobile internet 
+ Recharge G network 
+ Recharge G network 
+Average Recharge Amount in local currency Mobile internet
+Mobile internet usage volume in MB G network  
+Mobile internet usage volume in MB G network  
+Average revenue per user G network  
+Average revenue per user G network  
+Scheme to use during specific night hours only Prepaid service schemes called  PACKS  
+Service schemes with validity equivalent to a month G network  
+Service schemes with validity smaller than a month G network  
+Service schemes with validity equivalent to a month G network  
+Service schemes with validity smaller than a month G network  
+Volume based cost  when no specific scheme is not purchased and paid as per usage G network  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
