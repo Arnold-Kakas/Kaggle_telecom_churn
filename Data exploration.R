@@ -11,6 +11,7 @@ submission_id <- read.csv("Data/test.csv") %>% select(id)
 
 # Train data wrangling
 train <- train %>% mutate_if(is.character, ~na_if(., ""))
+train <- train %>% mutate_if(is.numeric, ~na_if(., 0))
 
 train <- train %>% 
   select(-c(
@@ -33,9 +34,9 @@ train <- train %>%
     date_of_last_rech_data_6, # nothing usefull
     date_of_last_rech_data_7, # nothing usefull
     date_of_last_rech_data_8, # nothing usefull
-    last_date_of_month_6, # nothing usefull
-    last_date_of_month_7, # nothing usefull
-    last_date_of_month_8, # nothing usefull
+    #last_date_of_month_6, # nothing usefull
+    #last_date_of_month_7, # nothing usefull
+    #last_date_of_month_8, # nothing usefull
     total_og_mou_6, # totals will be calculated later on
     total_og_mou_7, # totals will be calculated later on
     total_og_mou_8, # totals will be calculated later on
@@ -108,7 +109,15 @@ train_cleaned <- train %>%
 
 # Create a tidymodels recipe for data preprocessing
 model_recipe <- recipe(churn ~ ., data = train_cleaned) %>%
-  #step_interact(all_numeric_predictors()) %>% 
+  step_date(c(    date_of_last_rech_6, 
+                  date_of_last_rech_7, 
+                  date_of_last_rech_8, 
+                  last_day_rch_amt_6, 
+                  last_day_rch_amt_7, 
+                  last_day_rch_amt_8, 
+                  date_of_last_rech_data_6, 
+                  date_of_last_rech_data_7, 
+                  date_of_last_rech_data_8 ), features = c("month")) %>% 
   step_scale(all_numeric_predictors()) %>%
   step_center(all_numeric_predictors())# %>% 
   #step_pca(all_numeric_predictors())
@@ -165,8 +174,6 @@ tune_wf <- workflow() %>%
 
 trees_folds <- vfold_cv(train_data)
 
-doParallel::registerDoParallel()
-
 tune_res <- tune_grid(
   tune_wf,
   resamples = trees_folds,
@@ -206,43 +213,45 @@ test <- test %>% mutate_if(is.character, ~na_if(., ""))
 
 test <- test %>% 
   select(-c(
-    circle_id,
-    loc_og_t2o_mou,
-    std_og_t2o_mou,
-    loc_ic_t2o_mou,
-    std_og_t2c_mou_6,
-    std_og_t2c_mou_7,
-    std_og_t2c_mou_8,
-    std_ic_t2o_mou_6,
-    std_ic_t2o_mou_7,
-    std_ic_t2o_mou_8,
-    date_of_last_rech_6,
-    date_of_last_rech_7,
-    date_of_last_rech_8,
-    last_day_rch_amt_6,
-    last_day_rch_amt_7,
-    last_day_rch_amt_8,
-    date_of_last_rech_data_6,
-    date_of_last_rech_data_7,
-    date_of_last_rech_data_8,
-    last_date_of_month_6,
-    last_date_of_month_7,
-    last_date_of_month_8,
-    total_og_mou_6,
-    total_og_mou_7,
-    total_og_mou_8,
-    total_ic_mou_6,
-    total_ic_mou_7,
-    total_ic_mou_8,
-    total_rech_num_6,
-    total_rech_num_7,
-    total_rech_num_8,
-    total_rech_amt_6,
-    total_rech_amt_7,
-    total_rech_amt_8,
-    total_rech_data_6,
-    total_rech_data_7,
-    total_rech_data_8
+    select(-c(
+      circle_id, # same in all rows,
+      loc_og_t2o_mou, # all blank or 0
+      std_og_t2o_mou, # all blank or 0
+      loc_ic_t2o_mou, # all blank or 0
+      std_og_t2c_mou_6, # all blank or 0
+      std_og_t2c_mou_7, # all blank or 0
+      std_og_t2c_mou_8, # all blank or 0
+      std_ic_t2o_mou_6, # all blank or 0
+      std_ic_t2o_mou_7, # all blank or 0
+      std_ic_t2o_mou_8, # all blank or 0
+      date_of_last_rech_6, # nothing usefull
+      date_of_last_rech_7, # nothing usefull
+      date_of_last_rech_8, # nothing usefull
+      last_day_rch_amt_6, # nothing usefull
+      last_day_rch_amt_7, # nothing usefull
+      last_day_rch_amt_8, # nothing usefull
+      date_of_last_rech_data_6, # nothing usefull
+      date_of_last_rech_data_7, # nothing usefull
+      date_of_last_rech_data_8, # nothing usefull
+      #last_date_of_month_6, # nothing usefull
+      #last_date_of_month_7, # nothing usefull
+      #last_date_of_month_8, # nothing usefull
+      total_og_mou_6, # totals will be calculated later on
+      total_og_mou_7, # totals will be calculated later on
+      total_og_mou_8, # totals will be calculated later on
+      total_ic_mou_6, # totals will be calculated later on
+      total_ic_mou_7, # totals will be calculated later on
+      total_ic_mou_8, # totals will be calculated later on
+      total_rech_num_6, # totals will be calculated later on
+      total_rech_num_7, # totals will be calculated later on
+      total_rech_num_8, # totals will be calculated later on
+      total_rech_amt_6, # totals will be calculated later on
+      total_rech_amt_7, # totals will be calculated later on
+      total_rech_amt_8, # totals will be calculated later on
+      total_rech_data_6, # totals will be calculated later on
+      total_rech_data_7, # totals will be calculated later on
+      total_rech_data_8 # totals will be calculated later on
+    ))
   ))
 
 test <- test %>% 
