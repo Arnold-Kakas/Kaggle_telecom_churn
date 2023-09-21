@@ -107,11 +107,11 @@ train_cleaned <- train %>%
 
 
 # Create a tidymodels recipe for data preprocessing
-pca_recipe <- recipe(churn ~ ., data = train_cleaned) %>%
+model_recipe <- recipe(churn ~ ., data = train_cleaned) %>%
   #step_interact(all_numeric_predictors()) %>% 
   step_scale(all_numeric_predictors()) %>%
-  step_center(all_numeric_predictors()) %>% 
-  step_pca(all_numeric_predictors())
+  step_center(all_numeric_predictors())# %>% 
+  #step_pca(all_numeric_predictors())
 
 
 # Split the data into training and testing sets
@@ -123,9 +123,9 @@ test_data <- testing(data_split)
 
 # Lets see how do PCAs look like, for reference check https://juliasilge.com/blog/cocktail-recipes-umap/
 
-pca_prep <- prep(pca_recipe)
+pca_prep <- prep(model_recipe)
 
-tidied_pca <- tidy(pca_prep, 3)
+tidied_pca <- tidy(pca_prep, 2)
 
 tidied_pca %>%
   filter(component %in% paste0("PC", 1:5)) %>%
@@ -136,7 +136,7 @@ tidied_pca %>%
   labs(y = NULL)
 
 # Fit the recipe to the training data
-data_preprocessor <- prep(pca_recipe, training = train_data)
+data_preprocessor <- prep(model_recipe, training = train_data)
 
 # Transform both training and testing data
 train_data_preprocessed <- bake(data_preprocessor, new_data = train_data)
@@ -150,6 +150,41 @@ model_spec <- rand_forest() %>%
 # Fit the model to the data
 final_model <- model_spec %>%
   fit(churn ~ ., data = train_data_preprocessed)
+
+tune_spec <- rand_forest(
+  mtry = tune(),
+  trees = 1000,
+  min_n = tune()
+) %>%
+  set_mode("classification") %>%
+  set_engine("ranger")
+
+tune_wf <- workflow() %>%
+  add_recipe(model_recipe) %>%
+  add_model(tune_spec)
+
+trees_folds <- vfold_cv(train_data)
+
+doParallel::registerDoParallel()
+
+tune_res <- tune_grid(
+  tune_wf,
+  resamples = trees_folds,
+  grid = 20
+)
+
+tune_res %>%
+  collect_metrics() %>%
+  filter(.metric == "roc_auc") %>%
+  select(mean, min_n, mtry) %>%
+  pivot_longer(min_n:mtry,
+               values_to = "value",
+               names_to = "parameter"
+  ) %>%
+  ggplot(aes(value, mean, color = parameter)) +
+  geom_point(show.legend = FALSE) +
+  facet_wrap(~parameter, scales = "free_x") +
+  labs(x = NULL, y = "AUC")
 
 # Make predictions on the test set
 predictions <- final_model %>%
@@ -266,4 +301,4 @@ test_predictions <- final_model %>%
 submission <- cbind(submission_id, test_predictions)
 colnames(submission) <- c("id", "churn_probability")
 
-write.csv(submission, "submission.csv", row.names = FALSE)
+write.csv(submission, "submission2.csv", row.names = FALSE)
